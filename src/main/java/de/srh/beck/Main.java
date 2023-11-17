@@ -1,8 +1,11 @@
 package de.srh.beck;
 
+import com.mysql.cj.callback.MysqlCallback;
+import de.srh.beck.database.MySQLConnection;
 import de.srh.beck.ui.terminal.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
 
@@ -20,6 +23,7 @@ public class Main {
         for (IMenu menu : this.menus) {
             System.out.println(menu.getName());
         }
+        System.out.println(Arrays.toString(new MySQLConnection().getAllUser().toArray()));
     }
     public static void main(String[] args) {
         Main main = new Main();
