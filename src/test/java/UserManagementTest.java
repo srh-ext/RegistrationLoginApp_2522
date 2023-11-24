@@ -55,4 +55,26 @@ public class UserManagementTest {
         System.out.println(user.getLastname());
         System.out.println(user.getPassword());
     }
+
+    @Test
+    public void testAuthenticateUser2() {
+        String email = "social@solovyov.de";
+        String password = "test";
+
+        UserManagement um = new UserManagement();
+        User user = um.authenticateUser2(email, password);
+
+        System.out.println(user.getFirstname());
+
+        //Test #2
+        String email1 = "socialFALSCH@solovyov.de";
+        String password1 = "test";
+
+        User user1 = um.authenticateUser2(email1, password1);
+        if (user1 != null) {
+            System.out.println(user1.getFirstname());
+        } else {
+            System.out.println("User not found!");
+        }
+    }
 }

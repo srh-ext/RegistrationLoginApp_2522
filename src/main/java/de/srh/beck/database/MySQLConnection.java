@@ -3,6 +3,7 @@ package de.srh.beck.database;
 import de.srh.beck.dao.User;
 
 import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -97,7 +98,7 @@ public class MySQLConnection implements IDatabaseConnection {
                     + "(gender, first_name, last_name, email, hash_password, birthdate)"
                     + "VALUES(?, ?, ?, ?, MD5(?), ?)";
 
-            PreparedStatement ps =this.getConnection().prepareStatement(sql);
+            PreparedStatement ps = this.getConnection().prepareStatement(sql);
             ps.setString(1, user.getGender().toString());
             ps.setString(2, user.getFirstname());
             ps.setString(3, user.getLastname());
@@ -113,6 +114,31 @@ public class MySQLConnection implements IDatabaseConnection {
         }
 
         return true;
+    }
+
+    @Override
+    public User findUserByEmailAndPassword(String email, String password) {
+        //TODO: Datenbankverbindung
+        //TODO: Vergleichen Input mit den Werten aus der Datenbank Tabelle tbl_user
+        //TODO: SQL Befehl: SELECT * FROM tbl_user WHERE email LIKE email AND hash_password LIKE MD5(password);
+        //TODO: Mapping: die Werte aus der Datenbank in ein User Objekt übertragen
+        User user = null;
+        try {
+            String sql = "SELECT * FROM tbl_user WHERE email LIKE '"+email+"' AND hash_password LIKE MD5('"+password+"');";
+            Statement statement = this.getConnection().createStatement();
+            ResultSet users = statement.executeQuery(sql);
+
+            user = new User();
+            if (users.next()) {
+                //mapping
+                user.setUserId(users.getInt("user_id"));
+                user.setFirstname(users.getString("first_name"));
+                return user;
+            }
+        } catch(Exception ex) {
+            System.out.println("ERROR: cannot execute statement. "+ ex.getMessage());
+        }
+        return null;
     }
 
     public ArrayList<User> getAllUser() {

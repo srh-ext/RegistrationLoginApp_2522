@@ -15,4 +15,6 @@ public interface IDatabaseConnection {
     User getUserById(int userId);
 
     boolean addUser(User user);
+
+    User findUserByEmailAndPassword(String email, String password);
 }
