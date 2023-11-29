@@ -1,5 +1,7 @@
 package de.srh.beck.ui.terminal;
 
+import de.srh.beck.logic.UserManagement;
+
 public interface IMenu {
 
     String getName();
@@ -9,4 +11,8 @@ public interface IMenu {
     boolean isLogout();
 
     void showDialog();
+
+    void setUserManagement(UserManagement um);
+
+    UserManagement getUserManagement();
 }

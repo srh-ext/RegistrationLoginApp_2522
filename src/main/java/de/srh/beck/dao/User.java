@@ -71,4 +71,21 @@ public class User {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
+
+    @Override
+    public String toString() {
+        return userId
+                + "\n"
+                + gender.toString()
+                + "\n"
+                + firstname
+                + "\n"
+                + lastname
+                + "\n"
+                + email
+                + "\n"
+                + password
+                + "\n"
+                + birthdate.toString();
+    }
 }

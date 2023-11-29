@@ -2,6 +2,7 @@ package de.srh.beck;
 
 import com.mysql.cj.callback.MysqlCallback;
 import de.srh.beck.database.MySQLConnection;
+import de.srh.beck.logic.UserManagement;
 import de.srh.beck.ui.terminal.*;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class Main {
 
     private ArrayList<IMenu> userMenu = null;
 
+    private UserManagement userManagement = null;
+
     public Main() {
         this.menus = new ArrayList<IMenu>();
         this.menus.add(new Registration());
@@ -24,6 +27,8 @@ public class Main {
         this.userMenu = new ArrayList<IMenu>();
         this.userMenu.add(new Logout());
         this.userMenu.add(new Exit());
+        //init user manager and database connection
+        this.userManagement = new UserManagement();
     }
 
     public void showMenu() {
@@ -46,6 +51,7 @@ public class Main {
                 if (selectedMenu < this.menus.size()) {
                     //Show menu dialog
                     IMenu menu = this.menus.get(selectedMenu);
+                    menu.setUserManagement(this.userManagement);
                     menu.showDialog();
 
                     if (menu.isExit()) {
