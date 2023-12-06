@@ -1,5 +1,5 @@
-host=127.0.0.1
-user=root
-password=test
-port=8889
-dbname=test
+db.host=127.0.0.1
+db.username=test
+db.password=test
+db.port=3306
+db.dbname=reg_login_app_2522
