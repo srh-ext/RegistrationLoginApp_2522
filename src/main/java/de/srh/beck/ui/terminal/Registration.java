@@ -30,7 +30,9 @@ public class Registration extends Menu {
 
         System.out.print("Please enter gender [MR/MRS]> ");
         String gender = scanner.nextLine();
-        user.setGender(User.Gender.valueOf(gender));
+        if (gender != null && gender.isBlank()) {
+            user.setGender(User.Gender.valueOf(gender));
+        }
 
         System.out.print("Please enter first name > ");
         String firstname = scanner.nextLine();

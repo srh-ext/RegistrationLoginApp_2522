@@ -142,7 +142,12 @@ public class MySQLConnection implements IDatabaseConnection {
             if (users.next()) {
                 //mapping
                 user.setUserId(users.getInt("user_id"));
+                user.setEmail(users.getString("email"));
+                user.setBirthdate(users.getDate("birthdate"));
                 user.setFirstname(users.getString("first_name"));
+                user.setLastname(users.getString("last_name"));
+                user.setGender(User.Gender.valueOf(users.getString("gender")));
+
                 return user;
             }
         } catch(Exception ex) {
