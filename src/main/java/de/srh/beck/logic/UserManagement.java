@@ -4,12 +4,14 @@ import de.srh.beck.dao.User;
 import de.srh.beck.database.IDatabaseConnection;
 import de.srh.beck.database.MySQLConnection;
 
+import java.util.Properties;
+
 public class UserManagement {
 
     private IDatabaseConnection connection;
 
-    public UserManagement() {
-        this.connection = new MySQLConnection();
+    public UserManagement(Properties dbProperties) {
+        this.connection = new MySQLConnection(dbProperties);
     }
 
     public boolean saveUser(User user) {

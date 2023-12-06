@@ -6,10 +6,29 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runners.JUnit4;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Date;
+import java.util.Properties;
 import java.util.Random;
 
 public class UserManagementTest {
+
+    private static final String PATH = "src/main/resources/config.properties";
+    private Properties properties = null;
+    private IDatabaseConnection mysql = null;
+
+    public UserManagementTest() {
+        this.properties = new Properties();
+        try {
+            InputStream input = new FileInputStream(PATH);
+            properties.load(input);
+        } catch (Exception ex) {
+            System.out.println("ERROR: Cannot read properties!\n" + ex.getMessage());
+            System.exit(-1);
+        }
+        this.mysql = new MySQLConnection(this.properties);
+    }
 
     @Test
     public void testAddUser() {
@@ -23,7 +42,6 @@ public class UserManagementTest {
         user.setPassword("test");
         user.setBirthdate(Date.valueOf("1986-11-13"));
         //add new user
-        IDatabaseConnection mysql = new MySQLConnection();
         boolean result = mysql.addUser(user);
         //validate result
         Assert.assertTrue(result);
@@ -34,7 +52,6 @@ public class UserManagementTest {
         String email = "social@solovyov.de";
         String password = "test";
 
-        IDatabaseConnection mysql = new MySQLConnection();
         User user = mysql.getUserByEmail(email);
 
         Assert.assertNotNull(user);
@@ -46,8 +63,8 @@ public class UserManagementTest {
         String email = "social@solovyov.de";
         String password = "test";
 
-        UserManagement um = new UserManagement();
-        User user = um.authenticateUser(email,password);
+        UserManagement um = new UserManagement(this.properties);
+        User user = um.authenticateUser(email, password);
 
         Assert.assertNotNull(user);
         Assert.assertEquals(email, user.getEmail());
@@ -61,7 +78,7 @@ public class UserManagementTest {
         String email = "social@solovyov.de";
         String password = "test";
 
-        UserManagement um = new UserManagement();
+        UserManagement um = new UserManagement(this.properties);
         User user = um.authenticateUser2(email, password);
 
         System.out.println(user.getFirstname());

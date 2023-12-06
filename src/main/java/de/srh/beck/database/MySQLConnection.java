@@ -6,17 +6,27 @@ import javax.swing.plaf.nimbus.State;
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class MySQLConnection implements IDatabaseConnection {
 
-    private final String host = "127.0.0.1";
-    private final String username = "root";
-    private final String password = "root";
-    private final int port = 8889;
-    private final String dbname = "reg_login_app_2522";
+    private String host = "127.0.0.1";
+    private String username = "root";
+    private String password = "";
+    private int port = 8889;
+    private String dbname = "reg_login_app_2522";
     private Connection connection = null;
 
-    public MySQLConnection() {
+    public MySQLConnection(Properties dbProperties) {
+        if (dbProperties != null) {
+            System.out.println("INFO: reading database config...");
+
+            host = dbProperties.getProperty("db.host");
+            username = dbProperties.getProperty("db.username");
+            password = dbProperties.getProperty("db.password");
+            port = Integer.valueOf(dbProperties.getProperty("db.port"));
+            dbname = dbProperties.getProperty("db.dbname");
+        }
     }
 
     @Override

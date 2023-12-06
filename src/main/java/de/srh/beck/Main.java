@@ -1,24 +1,26 @@
 package de.srh.beck;
 
-import com.mysql.cj.callback.MysqlCallback;
 import de.srh.beck.database.MySQLConnection;
 import de.srh.beck.logic.UserManagement;
 import de.srh.beck.ui.terminal.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class Main {
 
     private ArrayList<IMenu> menus = null;
-
     private ArrayList<IMenu> userMenu = null;
-
     private UserManagement userManagement = null;
+    private Properties props = null;
+    private static final String PATH = "src/main/resources/config.properties";
 
     public Main() {
+        readProperties();
+
         this.menus = new ArrayList<IMenu>();
         this.menus.add(new Registration());
         this.menus.add(new Login());
@@ -28,7 +30,20 @@ public class Main {
         this.userMenu.add(new Logout());
         this.userMenu.add(new Exit());
         //init user manager and database connection
-        this.userManagement = new UserManagement();
+        if (this.props != null) {
+            this.userManagement = new UserManagement(this.props);
+        }
+    }
+
+    private void readProperties() {
+        this.props = new Properties();
+        try {
+            InputStream input = new FileInputStream(PATH);
+            props.load(input);
+        } catch(Exception ex) {
+            System.out.println("ERROR: Cannot read properties!\n" + ex.getMessage());
+            System.exit(-1);
+        }
     }
 
     public void showMenu() {
@@ -97,7 +112,6 @@ public class Main {
             Login --> show login mask --> logout menu
             Logout --> show logout info --> main menu
             Exit --> application stop
-
          */
     }
 
