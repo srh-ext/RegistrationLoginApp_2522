@@ -33,12 +33,12 @@ public class Registration extends Menu {
 
         HashMap<String, String> map = new LinkedHashMap<>();
                 //key               value
-        map.put("gender [MR/MRS]", "enum");
-        map.put("first name", null);
-        map.put("last name", null);
-        map.put("birthdate [YYYY-MM-DD]", "date");
-        map.put("email address", null);
-        map.put("password", null);
+        map.put("gender [MR/MRS]", Validator.Type.gender.toString());
+        map.put("first name", Validator.Type.text.toString());
+        map.put("last name", Validator.Type.text.toString());
+        map.put("birthdate [YYYY-MM-DD]", Validator.Type.date.toString());
+        map.put("email address", Validator.Type.email.toString());
+        map.put("password", Validator.Type.password.toString());
 
         for (String key: map.keySet()) {
             while(true) {
@@ -47,12 +47,11 @@ public class Registration extends Menu {
 
                     String input = scanner.nextLine();
 
-                    Validator.isValid(input);
+                    Validator.isValid(input, Validator.Type.valueOf(map.get(key)));
 
                     map.replace(key, input);
                 } catch (NullPointerException ex) {
-                    System.out.println(ex.getMessage()
-                            + "\nPlease enter " + key + " again.");
+                    System.out.println(ex.getMessage());
                     continue;
                 }
                 break;
