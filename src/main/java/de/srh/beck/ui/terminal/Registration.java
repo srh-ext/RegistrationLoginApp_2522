@@ -1,8 +1,11 @@
 package de.srh.beck.ui.terminal;
 
 import de.srh.beck.dao.User;
+import de.srh.beck.validation.Validator;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class Registration extends Menu {
@@ -25,34 +28,46 @@ public class Registration extends Menu {
         }
 
         System.out.println("Please feel the registration form.");
-        User user = new User();
+
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Please enter gender [MR/MRS]> ");
-        String gender = scanner.nextLine();
-        if (gender != null && gender.isBlank()) {
-            user.setGender(User.Gender.valueOf(gender));
+        HashMap<String, String> map = new LinkedHashMap<>();
+                //key               value
+        map.put("gender [MR/MRS]", "enum");
+        map.put("first name", null);
+        map.put("last name", null);
+        map.put("birthdate [YYYY-MM-DD]", "date");
+        map.put("email address", null);
+        map.put("password", null);
+
+        for (String key: map.keySet()) {
+            while(true) {
+                try {
+                    System.out.print("Please enter " + key + "> ");
+
+                    String input = scanner.nextLine();
+
+                    Validator.isValid(input);
+
+                    map.replace(key, input);
+                } catch (NullPointerException ex) {
+                    System.out.println(ex.getMessage()
+                            + "\nPlease enter " + key + " again.");
+                    continue;
+                }
+                break;
+            }
         }
 
-        System.out.print("Please enter first name > ");
-        String firstname = scanner.nextLine();
-        user.setFirstname(firstname);
-
-        System.out.print("Please enter last name > ");
-        String lastname = scanner.nextLine();
-        user.setLastname(lastname);
-
-        System.out.print("Please enter your birthdate [YYYY-MM-DD]> ");
-        Date birthdate = Date.valueOf(scanner.nextLine());
-        user.setBirthdate(birthdate);
-
-        System.out.print("Please enter e-mail address > ");
-        String email = scanner.nextLine();
-        user.setEmail(email);
-
-        System.out.print("Please enter password > ");
-        String password = scanner.nextLine();
-        user.setPassword(password);
+        User user = new User();
+        user.setGender(
+                User.Gender.valueOf(
+                        map.get("gender [MR/MRS]")));
+        user.setFirstname(map.get("first name"));
+        user.setLastname(map.get("last name"));
+        user.setBirthdate(Date.valueOf(map.get("birthdate [YYYY-MM-DD]")));
+        user.setEmail(map.get("email address"));
+        user.setPassword(map.get("password"));
 
         System.out.println("=================================");
         System.out.println("Your input: ");
